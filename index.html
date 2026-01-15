@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magic Fingers | Premium Spirits</title>
+
+    <!-- Google Fonts for Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- Hidden video element for MediaPipe processing -->
+    <video id="video"></video>
+
+    <!-- Canvas for rendering the finger trails -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Loading overlay shown during model initialization -->
+    <div id="loading-overlay">
+        <span>Loading Magic AI...</span>
+    </div>
+
+    <!-- Spatial UI Elements -->
+    <div class="finger-cursor"></div>
+    <div class="finger-cursor"></div>
+    <div class="finger-cursor"></div>
+    <div class="finger-cursor"></div>
+    <div class="finger-cursor"></div>
+
+    <!-- Main Content -->
+    <main id="content-container">
+        <header class="site-header">
+            <h1>AURA</h1>
+            <p>Hand-Crafted Spirits</p>
+        </header>
+
+        <div class="product-grid">
+            <!-- Please update the 'src' attributes to match your actual filenames in 'public/images/' -->
+            <div class="product-card product-card--color-1">
+                <div class="product-image-wrapper">
+                    <img src="/images/001.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>The Artisan</h2>
+                <p>Speyside Single Malt</p>
+                <span class="price">$180.00</span>
+            </div>
+            <div class="product-card product-card--color-2">
+                <div class="product-image-wrapper">
+                    <img src="/images/002.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Golden Nectar</h2>
+                <p>Aged Caribbean Rum</p>
+                <span class="price">$150.00</span>
+            </div>
+            <div class="product-card product-card--color-3">
+                 <div class="product-image-wrapper">
+                    <img src="/images/003.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Tidal Gin</h2>
+                <p>Coastal Botanical Gin</p>
+                <span class="price">$85.00</span>
+            </div>
+            <div class="product-card product-card--color-4">
+                 <div class="product-image-wrapper">
+                    <img src="/images/004.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Ember & Oak</h2>
+                <p>Kentucky Straight Bourbon</p>
+                <span class="price">$120.00</span>
+            </div>
+            <div class="product-card product-card--color-5">
+                 <div class="product-image-wrapper">
+                    <img src="/images/005.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Obsidian Reserve</h2>
+                <p>Double-Aged Scotch</p>
+                <span class="price">$250.00</span>
+            </div>
+            <div class="product-card product-card--color-1">
+                 <div class="product-image-wrapper">
+                    <img src="/images/006.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Silver Leaf</h2>
+                <p>Blanco Tequila</p>
+                <span class="price">$95.00</span>
+            </div>
+            <div class="product-card product-card--color-2">
+                 <div class="product-image-wrapper">
+                    <img src="/images/007.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Crimson Peak</h2>
+                <p>Spiced Cherry Liqueur</p>
+                <span class="price">$75.00</span>
+            </div>
+            <div class="product-card product-card--color-3">
+                 <div class="product-image-wrapper">
+                    <img src="/images/008.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Solaris Vodka</h2>
+                <p>Triple-Distilled</p>
+                <span class="price">$60.00</span>
+            </div>
+             <div class="product-card product-card--color-4">
+                 <div class="product-image-wrapper">
+                    <img src="/images/009.jpg" alt="Spirit Bottle">
+                </div>
+                <h2>Midnight Velvet</h2>
+                <p>Rich Coffee Liqueur</p>
+                <span class="price">$90.00</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shopping Cart Icon -->
+    <div id="cart-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span id="cart-badge">0</span>
+    </div>
+
+    <!-- Main application script -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
