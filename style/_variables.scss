@@ -1,0 +1,22 @@
+// Layout & Aesthetic
+$bg-dark: #050505;
+$bg-card: #111111;
+$text-light: #f4f4f4;
+$text-muted: #a3a3a3;
+$accent-gold: #c5a059;
+
+// Typography
+$font-serif: 'Cormorant Garamond', serif;
+$font-sans: 'Inter', sans-serif;
+
+// Finger colors (Hex only)
+$color-thumb: #ff0055;
+$color-index: #00ff99;
+$color-middle: #00d4ff;
+$color-ring: #ffcc00;
+$color-pinky: #9d00ff;
+
+// Helper function để xử lý màu (Tránh lỗi rgba)
+@function glow-color($color, $opacity) {
+  @return color-mix(in srgb, $color, transparent (100% - ($opacity * 100%)));
+}

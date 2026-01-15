@@ -1,0 +1,305 @@
+@use 'variables' as var;
+
+// --- Basic CSS Reset ---
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// --- Core Body & Document styles ---
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var.$bg-dark;
+    color: var.$text-light;
+    font-family: var.$font-sans;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+// --- Main Content & Header ---
+#content-container {
+    position: relative;
+    z-index: 10; // Products are on z-index 10
+}
+
+.site-header {
+    text-align: center;
+    padding: 4rem 1rem 2rem;
+    h1 {
+        font-family: var.$font-serif;
+        font-size: 3rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    p {
+        color: var.$text-muted;
+        font-size: 1rem;
+    }
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem 10rem;
+    // FIX: Force visibility
+    min-height: 100vh;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+// --- Product Card ---
+.product-card {
+    background-color: var.$bg-card;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease, top 0.4s ease, left 0.4s ease;
+    filter: brightness(1);
+    z-index: 11; // Above the content container background
+    // FIX: Force visibility
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+// DRAGGING STATE
+.product-card.is-dragging {
+    position: fixed !important;
+    z-index: 10000 !important; // Above everything except loading overlay and debug dot
+    pointer-events: none !important;
+    transition: none;
+}
+
+.product-card.is-sucking {
+    position: fixed !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
+    
+    // Hiệu ứng tăng tốc khi bị hút (Ease-in)
+    transition: 
+        left 0.6s cubic-bezier(0.47, 0, 0.74, 0.71),
+        top 0.6s cubic-bezier(0.47, 0, 0.74, 0.71),
+        transform 0.6s ease-in,
+        opacity 0.6s ease !important;
+
+    transform: scale(0) rotate(20deg) !important; // Thu nhỏ và xoáy nhẹ
+    opacity: 0.5 !important;
+}
+
+// Bổ sung Haptic Glow khi đang nắm
+.product-card.is-dragging {
+    filter: brightness(1.3);
+    box-shadow: 0 0 40px rgba(var.$accent-gold, 0.4) !important;
+}
+
+.product-image-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 65%);
+        z-index: 1;
+    }
+
+    img {
+        position: relative;
+        z-index: 2;
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 6;
+        object-fit: cover;
+        border-radius: 2px;
+        filter: brightness(1.1) contrast(1.05);
+    }
+}
+
+.product-card h2 {
+    font-family: var.$font-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var.$text-light;
+    margin-bottom: 0.25rem;
+}
+
+.product-card p {
+    color: var.$text-muted;
+    margin-bottom: 1rem;
+}
+
+.product-card .price {
+    font-family: var.$font-sans;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var.$accent-gold;
+}
+
+// --- Hover State ---
+.product-card.is-hovered {
+    transform: scale(1.03);
+    filter: brightness(1.2);
+}
+.product-card--color-1.is-hovered { box-shadow: 0 0 35px -5px color-mix(in srgb, var.$color-thumb, transparent 40%); }
+.product-card--color-2.is-hovered { box-shadow: 0 0 35px -5px color-mix(in srgb, var.$color-index, transparent 40%); }
+.product-card--color-3.is-hovered { box-shadow: 0 0 35px -5px color-mix(in srgb, var.$color-middle, transparent 40%); }
+.product-card--color-4.is-hovered { box-shadow: 0 0 35px -5px color-mix(in srgb, var.$color-ring, transparent 40%); }
+.product-card--color-5.is-hovered { box-shadow: 0 0 35px -5px color-mix(in srgb, var.$color-pinky, transparent 40%); }
+
+
+// --- Shopping Cart Icon ---
+#cart-icon.is-targeted {
+    animation: pulse-cart 1.5s infinite ease-in-out;
+}
+
+#cart-icon {
+    position: fixed;
+    bottom: 40px; right: 40px;
+    width: 120px; height: 120px;
+    background-color: var.$bg-card;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #333;
+    z-index: 99;
+    transition: transform 0.3s ease;
+    
+    svg { stroke: var.$text-light; width: 48px; height: 48px; }
+}
+
+#cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background-color: #3b82f6; // Màu xanh blue như mẫu
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid #1a1a1a; // Viền đen để tách biệt với giỏ
+    
+    // Hiệu ứng ẩn/hiện
+    transform: translate(25%, -25%) scale(0);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+}
+
+// Class kích hoạt hiển thị
+#cart-badge.is-visible {
+    transform: translate(25%, -25%) scale(1);
+}
+
+// Hiệu ứng nảy khi số tăng
+.badge-pop {
+    animation: badge-pop 0.3s ease-out;
+}
+
+@keyframes badge-pop {
+    0% { transform: translate(25%, -25%) scale(1); }
+    50% { transform: translate(25%, -25%) scale(1.4); }
+    100% { transform: translate(25%, -25%) scale(1); }
+}
+
+@keyframes pulse-cart {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(var.$accent-gold, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 40px rgba(var.$accent-gold, 0.7);
+    }
+}
+
+
+// --- Spatial UI & Core Elements ---
+.finger-cursor {
+    display: none;
+    position: fixed;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(var.$accent-gold, 0.5) 50%, rgba(var.$accent-gold, 0) 70%);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s linear;
+}
+
+#canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: transparent !important;
+    z-index: 9998;
+    pointer-events: none;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var.$bg-dark;
+    transition: opacity 0.5s ease-out;
+
+    span {
+        color: #fff;
+        font-size: 1.5rem;
+        animation: pulse-loading 2s infinite ease-in-out;
+    }
+}
+
+#video {
+    display: none;
+}
+
+// --- Debug Helper ---
+#debug-dot {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    z-index: 10002; // Highest z-index
+    pointer-events: none;
+    display: none;
+    transform: translate(-50%, -50%);
+}
+
+// --- Product Placeholder ---
+.product-placeholder {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+
+@keyframes pulse-loading {
+    0%, 100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var.$accent-gold; }
+    50% { text-shadow: 0 0 10px #fff, 0 0 20px var.$accent-gold, 0 0 30px var.$accent-gold; }
+}
